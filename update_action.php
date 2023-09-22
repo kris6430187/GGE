@@ -1,15 +1,12 @@
 <?php
-if (!isset($_GET["uid"])) {
+if (!isset($_POST["uid"])) {
     echo "Back to <a href='update.php'>update page</a><br><br>";
     die("Parameter uid not submitted to page!");
 } else {
-    $selected_uid = $_GET["uid"];
+    $selected_uid = $_POST["uid"];
 }
 
-$email = $_GET["email"];
-$Gender = $_GET["Gender"];
-$BirthYear = $_GET["BirthYear"];
-$SubscriptionYear = $_GET["SubscriptionYear"];
+$Gender = $_POST["Gender"];
 
 include 'db.include.php';
 
@@ -21,18 +18,16 @@ if ($conn->connect_error) {
     die("Connect failed: " . $conn->connect_error);
 }
 
-$sql = "UPDATE Members SET email ='" . $email. "', Gender ='" . 
-$Gender . "', BirthYear = ". $BirthYear . ", SubscriptionYear = ". 
-$SubscriptionYear . " WHERE uid = " . $selected_uid;
+// Prepare and execute the SQL update query to only update the "Gender" field
+$stmt = $conn->prepare("UPDATE Members SET Gender=? WHERE uid=?");
+$stmt->bind_param("si", $Gender, $selected_uid);
 
-$result = $conn->query($sql);
-
-if ($result == TRUE) {
-    print_r("Successful updated record with uid = " . 
-    $selected_uid);
+if ($stmt->execute()) {
+    echo "Successful updated gender for UID = " . $selected_uid;
 } else {
-    print_r("no result found");
+    echo "Error updating gender: " . $stmt->error;
 }
 
+$stmt->close();
 $conn->close();
 ?>

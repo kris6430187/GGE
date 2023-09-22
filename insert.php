@@ -6,9 +6,6 @@
 <body>
     <h1>Insert Data</h1>
     <form action="insert_action.php" method="post">
-        <label for="UID">UID:</label>
-        <input type="text" id="UID" name="UID" required><br><br>
-
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
 

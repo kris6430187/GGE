@@ -40,12 +40,25 @@ if ($Gender == 'M') {
 
 $conn->close();
 ?>
-<form action="update_action.php" method="get">
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Gender</title>
+</head>
+<body>
+    <h1>Update Gender</h1>
+    <form action="update_action.php" method="post">
     <table>
         <tr>
-            <td>uid:</td>
+            <td>UID:</td>
             <td><?php echo $selected_uid; ?></td>
-            <input type="hidden" id="uid" name="uid" value="<?php echo $selected_uid; ?>"></input>
+            <input type="hidden" id="uid" name="uid" value="<?php echo $selected_uid; ?>">
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><?php echo $email; ?></td>
+            <td><input type="hidden" name="email" value="<?php echo $email; ?>"></td>
         </tr>
         <tr>
             <td>Gender:</td>
@@ -56,5 +69,18 @@ $conn->close();
                 </select>
             </td>
         </tr>
+        <tr>
+            <td>Birth Year:</td>
+            <td><?php echo $BirthYear; ?></td>
+            <td><input type="hidden" name="BirthYear" value="<?php echo $BirthYear; ?>"></td>
+        </tr>
+        <tr>
+            <td>Subscription Year:</td>
+            <td><?php echo $SubscriptionYear; ?></td>
+            <td><input type="hidden" name="SubscriptionYear" value="<?php echo $SubscriptionYear; ?>"></td>
+        </tr>
     </table>
+    <input type="submit" value="Update">
 </form>
+</body>
+</html>

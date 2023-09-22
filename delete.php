@@ -13,30 +13,22 @@ $sql = "SELECT * FROM Members";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
+    echo "<table>";
+    echo "<tr><th>UID</th><th>Email</th><th>Gender</th><th>Birth Year</th><th>Subscription Year</th><th>Action</th></tr>";
     while ($row = $result->fetch_assoc()) {
-        $UID[] = $row["UID"];
-        $email[] = $row["email"];
-        $Gender[] = $row["Gender"];
-        $BirthYear[] = $row["BirthYear"];
-        $SubscriptionYear[] = $row["SubscriptionYear"];
+        echo "<tr>";
+        echo "<td>" . $row["UID"] . "</td>";
+        echo "<td>" . $row["email"] . "</td>";
+        echo "<td>" . $row["Gender"] . "</td>";
+        echo "<td>" . $row["BirthYear"] . "</td>";
+        echo "<td>" . $row["SubscriptionYear"] . "</td>";
+        echo "<td><a href='delete_action.php?uid=" . $row["UID"] . "'>Delete</a></td>";
+        echo "</tr>";
     }
-    $no = $result->num_rows;
+    echo "</table>";
 } else {
-    print_r("no result found");
+    echo "No results found.";
 }
 
 $conn->close();
-?>
-
-<?php
-for ($i = 0; $i < sizeof($UID); $i++) {
-    echo "<tr>";
-    echo "<td>" . $UID[$i] . "</td>";
-    echo "<td>" . $email[$i] . "</td>";
-    echo "<td>" . $Gender[$i] . "</td>";
-    echo "<td>" . $BirthYear[$i] . "</td>";
-    echo "<td>" . $SubscriptionYear[$i] . "</td>";
-    echo "<td><a href='delete_action.php?uid=" . $UID[$i] . "'>Delete</a></td>";
-    echo "</tr>";
-}
 ?>
