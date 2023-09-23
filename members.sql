@@ -27,6 +27,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `members`
 --
 
+-- Create Farmer Table
+CREATE TABLE Farmer (
+    'farm_id' SERIAL,
+    'farm_name' CHAR(50) NOT NULL,
+    'rice_type' CHAR(20) NOT NULL,
+    'rice_price' FLOAT NOT NULL
+    -- Add other attributes as needed
+);
+
+
 CREATE TABLE `members` (
   `UID` int(11) NOT NULL,
   `email` char(30) DEFAULT NULL,
@@ -54,6 +64,8 @@ INSERT INTO `members` (`UID`, `email`, `Gender`, `BirthYear`, `SubscriptionYear`
 --
 ALTER TABLE `members`
   ADD PRIMARY KEY (`UID`);
+ALTER TABLE `Farmer`
+  ADD PRIMARY KEY (`farm_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

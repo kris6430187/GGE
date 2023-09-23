@@ -1,31 +1,72 @@
-<?php
-include 'db.include.php';
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insert Result</title>
+    <link rel="stylesheet" href="style.css"> <!-- Include your existing CSS file here -->
+    <style>
+        /* Additional styles for this page only */
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+        .back-button a {
+            text-decoration: none;
+        }
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connect failed: " . $conn->connect_error);
-}
+        .back-button button {
+            width: auto; /* Allow the button to expand based on content */
+            padding: 10px 20px; /* Adjust padding for button size */
+            background-color: #007BFF; /* Button background color */
+            color: white; /* Text color */
+            border: none; /* Remove the border */
+            border-radius: 5px; /* Add rounded corners */
+            cursor: pointer; /* Show a pointer cursor on hover */
+            margin-top: 20px; /* Add space above the button */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Congratulations on your listing</h1>
+        
+        <div class="result-message">
+            <?php
+            include 'db.include.php';
 
-// Taking values from the form data (input)
-$email = $_REQUEST['email'];
-$gender = $_REQUEST['Gender'];
-$BirthYear = $_REQUEST['BirthYear'];
-$SubscriptionYear = $_REQUEST['SubscriptionYear'];
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Performing insert query execution, excluding UID
-$sql = "INSERT INTO Members (email, Gender, BirthYear, SubscriptionYear) 
-        VALUES ('$email', '$gender', $BirthYear, $SubscriptionYear)";
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connect failed: " . $conn->connect_error);
+            }
 
-$result = $conn->query($sql);
+            // Taking values from the form data (input)
+            $farm_name = $_REQUEST['farm_name'];
+            $rice_type = $_REQUEST['rice_type'];
+            $rice_price = $_REQUEST['rice_price'];
 
-if ($result) {
-    echo "Insert completed successfully!";
-} else {
-    echo "Insert Not Completed!";
-}
+            // Performing insert query execution, excluding UID
+            $sql = "INSERT INTO Farmer (farm_name, rice_type, rice_price) 
+                    VALUES ('$farm_name', '$rice_type', $rice_price)";
 
-$conn->close();
-?>
+            $result = $conn->query($sql);
+
+            if ($result) {
+                echo "Rice listed successfully!";
+            } else {
+                echo "Rice listed not completed!";
+            }
+
+            $conn->close();
+            ?>
+        </div>
+
+        <!-- Button to go back to the home page (index.html) -->
+        <div class="back-button">
+            <a href="index.html"><button>Go Back to Home Page</button></a>
+        </div>
+    </div>
+</body>
+</html>
