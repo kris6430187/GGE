@@ -2,18 +2,61 @@
 <html>
 <head>
     <title>Index CRUD Example</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <style>
+        .navbar-custom {
+            background-color: grey;
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .navbar-text {
+            color: black;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Golden Grain Exchange</h1>
-    <div class="menu">
-        <a href="index.html">Home</a> | 
-        <a href="select.php">Database</a> | 
-        <a href="update.php">For Factory</a> | 
-        <a href="insert.php">For Farmer</a> |
-        <a href="delete.php">Delete</a> | 
-    </div>
-    <br>
-    Website showing simple CRUD examples.
-</body>
-</html>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Golden Grain Exchange</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav justify-content-center">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html" style="color: black">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navbar-text"href="select.php">Database</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navbar-text" href="update.php">For Factory</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navbar-text" href="insert.php">For Farmer</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link navbar-text" href="delete.php">Delete</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="container text-center">
+        <h2>About GoldenGrainExchange</h2>
+        <div class="row align-items-center">
+            <div class="col">
+                <img src="./Assets/Chat Icon.png">
+                <h3>Our Story</h3>
+                <p>Our story revolves around the idea of creating a community where farmers and customers can come together to purchase and enjoy delicious rice. We believe in providing quality products that are sustainably sourced and ethically produced, so you can be sure that you are getting the best product available.</p>
+            </div>
+            <div class="col">
+                <img src="./Assets/LightBulb.png">
+                <h3>Our Idea</h3>
+                <p>"At Golden Grain Exchange, our vision is to create a better, more sustainable food system for everyone. We are committed to connecting farmers with customers in order to bring the freshest, highest quality rice to your table. By cutting out the middleman, we are able to make sure that farmers are getting the best price for their product and that customers are getting the best quality for their money. Every grain counts, and we are proud to be part of the solution."</p>
+            </div>
+            <div class="col">
+                <img src="./Assets/Chat Icon.png">
+                <h3>Our Technology</h3>
+                <p>Our state-of-the-art technology helps us to ensure that each grain of rice is of the highest quality, and that farmers are able to get a fair price for their product. We are passionate about helping to bridge the gap between farmers and customers, and we invite you to join us on this journey and experience the difference.</p>
+            </div>
