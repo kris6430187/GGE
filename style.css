@@ -1,69 +1,30 @@
-/* Reset default styles and set a background color */
-body {
-    font-family: "Arial", sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif&display=swap');
+
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Bree Serif', serif !important;
 }
 
-/* Style for the page title */
-h1 {
-    text-align: center;
-    color: #007BFF;
-    padding: 20px 0;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Style for the menu links */
-div.menu {
-    background-color: #fff;
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-div.menu a {
-    color: #007BFF;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-div.menu a:hover {
-    color: #ff6600; /* Change color on hover */
-}
-
-/* Style for the main content */
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-/* Add some spacing to the bottom of the page */
-.container p {
-    margin-bottom: 20px;
-}
-.About-us{
-    display:flex;
+.hero-header{
+    height: 80vh;
     width:100%;
-    height:600px;
-    background-color: aqua;
-}
-.About-us h2{
-    position: relative;
-    justify-content: center;
-    text-align: center;
-    font-family: Helvetica;
-    font-weight: 600;
-}
-.Aboutus-Content-Boxes{
+    background-size:cover;
+    background-repeat: no-repeat;
     display:flex;
     justify-content: center;
     align-items: center;
+    background-position: center;
+}
+.hero-header .header{
+    background: white;
+    text-align:center;
+    padding: 1rem;
+    opacity: .9;
+}
+
+
+/**for small screens*/
+@media only screen and (max-width: 600px) {
+  .hero-header {
+    height: 60vh;
+  }
 }

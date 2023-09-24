@@ -1,43 +1,13 @@
-<?php
-// Include the database configuration
-include 'db.include.php';
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connect failed: " . $conn->connect_error);
-}
-
-// Check if listing_id or order_id is provided in the URL
-if (isset($_GET["listing_id"])) {
-    // Delete farmer record based on listing_id
-    $selected_listing_id = $_GET["listing_id"];
-    $sql = "DELETE FROM farmer WHERE listing_id = " . $selected_listing_id;
-} elseif (isset($_GET["order_id"])) {
-    // Delete customer record based on order_id
-    $selected_order_id = $_GET["order_id"];
-    $sql = "DELETE FROM customer WHERE order_id = " . $selected_order_id;
-} else {
-    echo "Back to <a href='delete.php'>delete page</a><br><br>";
-    die("Parameter listing_id or order_id not submitted to page!");
-}
-
-// Execute the SQL query
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete Action</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
+    <title>Update Delivery Status</title>
+    <link rel="stylesheet" href="./css/bootstrap.css"> <!-- Update the path to your local Bootstrap CSS file -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="boot.css">
     <!-- Common CSS -->
     <link rel="stylesheet" href="style.css">
-    <style>
+    <style> 
         /* Increase the font size for the entire page */
         body {
             font-size: 18px;
@@ -45,34 +15,54 @@ $result = $conn->query($sql);
             display: flex;
             flex-direction: column;
         }
-
+        
         .navbar-custom {
             background-color: grey;
         }
-
         .navbar-custom .navbar-brand,
         .navbar-custom .navbar-text {
             color: black;
         }
-
         .navbar-nav {
             justify-content: center;
         }
-
         /* Center the "About us" section */
         .center-about-us {
             text-align: center;
         }
 
+        /* Style for the message box */
+        .message-box {
+            border: 2px solid #007BFF;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        /* Style for success message */
+        .message-success {
+            background-color: #D4EDDA;
+            border-color: #C3E6CB;
+            color: #155724;
+        }
+
+        /* Style for error message */
+        .message-error {
+            background-color: #F8D7DA;
+            border-color: #F5C6CB;
+            color: #721C24;
+        }
+
         /* Give some margin to the main content */
         .container {
             margin-top: 20px;
+            flex: 1; /* This makes the container fill the remaining vertical space */
         }
 
         /* Adjust the footer styles for better visibility */
         footer {
             background-color: #343a40;
             color: white;
+            flex-shrink: 0; /* This prevents the footer from shrinking when content is short */
         }
     </style>
 </head>
@@ -114,29 +104,54 @@ $result = $conn->query($sql);
             </div>
         </div>
     </nav>
-
     <div class="container mt-5">
-        <h1 class="mt-5">Delete Action</h1>
+        <h1 class="mb-4">Update Delivery Status</h1>
 
         <?php
-        if ($result == TRUE) {
-            echo '<div class="alert alert-success mt-3">';
-            echo "Successfully deleted record";
-            echo '</div>';
+        if (!isset($_POST["delivery_id"])) {
+            echo "Back to <a href='For_Delivery.php'>For Delivery</a><br><br>";
+            die("Parameter delivery_id not submitted to the page!");
         } else {
-            echo '<div class="alert alert-danger mt-3">';
-            echo "No result found";
+            $selected_delivery_id = $_POST["delivery_id"];
+        }
+
+        $delivery_status = $_POST["delivery_status"];
+
+        include 'db.include.php';
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connect failed: " . $conn->connect_error);
+        }
+
+        // Prepare and execute the SQL update query to update the "delivery_status" field
+        $stmt = $conn->prepare("UPDATE delivery SET delivery_status=? WHERE delivery_id=?");
+        $stmt->bind_param("si", $delivery_status, $selected_delivery_id);
+
+        if ($stmt->execute()) {
+            // Success message in a box
+            echo '<div class="message-box message-success">';
+            echo "Successfully updated delivery status for Delivery ID = " . $selected_delivery_id;
+            echo '</div>';
+
+            // Add a button to go back to For_Delivery.php
+            echo '<br><a href="For_Delivery.php" class="btn btn-primary">Back to Delivery</a>';
+        } else {
+            // Error message in a box
+            echo '<div class="message-box message-error">';
+            echo "Error updating delivery status: " . $stmt->error;
             echo '</div>';
         }
 
+        $stmt->close();
         $conn->close();
         ?>
-
-        <br><br>
-        <a href='delete.php' class="btn btn-primary">Go Back to Delete Page</a>
     </div>
 
-    <footer class="bg-dark text-white py-4 mt-auto">
+    <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -145,7 +160,10 @@ $result = $conn->query($sql);
                     <p>Phone: (123) 456-7890</p>
                 </div>
                 <div class="col-md-6">
-                    <!-- Add your social media links here -->
+                    <h5>Follow Us</h5>
+                    <a href="#" class="text-white">Facebook</a><br>
+                    <a href="#" class="text-white">Twitter</a><br>
+                    <a href="#" class="text-white">Instagram</a>
                 </div>
             </div>
             <div class="row mt-3">

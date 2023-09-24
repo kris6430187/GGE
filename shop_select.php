@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Update Page</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.css"> <!-- Update the path to your local Bootstrap CSS file -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="boot.css">
     <!--common.css  -->
     <link rel="stylesheet" href="style.css">
-    <style>
+    <style> 
         /* Increase the font size for the entire page */
         body {
             font-size: 18px;
@@ -15,20 +16,17 @@
             display: flex;
             flex-direction: column;
         }
-
+        
         .navbar-custom {
             background-color: grey;
         }
-
         .navbar-custom .navbar-brand,
         .navbar-custom .navbar-text {
             color: black;
         }
-
         .navbar-nav {
             justify-content: center;
         }
-
         /* Center the "About us" section */
         .center-about-us {
             text-align: center;
@@ -37,22 +35,23 @@
         /* Give some margin to the main content */
         .container {
             margin-top: 20px;
+            flex: 1; /* This makes the container fill the remaining vertical space */
         }
 
         /* Adjust the footer styles for better visibility */
         footer {
             background-color: #343a40;
             color: white;
+            flex-shrink: 0; /* This prevents the footer from shrinking when content is short */
         }
     </style>
 </head>
 <body>
-    <script src="./js/bootstrap.js"></script>
+<script src="./js/bootstrap.js"></script>
     <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand fs-2 " href="#">Golden Grain Exchange</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -85,69 +84,68 @@
             </div>
         </div>
     </nav>
+    
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <h1>Shop Selection</h1>
+        <?php
+        // Check if rice_name is provided in the URL
+        if (isset($_REQUEST['rice_name'])) {
+            // Get the rice_name from the URL
+            $riceName = $_REQUEST['rice_name'];
 
-    <?php
-    if (!isset($_POST["order_id"])) {
-        echo "Back to <a href='update.php'>update page</a><br><br>";
-        die("Parameter order_id not submitted to page!");
-    } else {
-        $selected_order_id = $_POST["order_id"];
-    }
+            include 'db.include.php';
 
-    $delivery_status = $_POST["delivery_status"];
-    $expected_delivery = $_POST["expected_delivery"];
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
 
-    include 'db.include.php';
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connect failed: " . $conn->connect_error);
+            }
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+            // Prepare and execute the SQL query
+            $sql = "SELECT listing_id, farm_name, rice_type, rice_price FROM farmer WHERE rice_type = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $riceName);
+            $stmt->execute();
 
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connect failed: " . $conn->connect_error);
-    }
+            // Get the query results
+            $result = $stmt->get_result();
 
-    // Prepare and execute the SQL update query to update the "delivery_status" and "expected_delivery" fields
-    $stmt = $conn->prepare("UPDATE factory SET delivery_status=?, expected_delivery=? WHERE order_id=?");
-    $stmt->bind_param("ssi", $delivery_status, $expected_delivery, $selected_order_id);
+            // Display the results in a table
+            if ($result->num_rows > 0) {
+                echo "<table class='table'>";
+                echo "<thead><tr><th>Listing ID</th><th>Farm Name</th><th>Rice Type</th><th>Rice Price</th><th>Action</th></tr></thead>";
+                echo "<tbody>";
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["listing_id"] . "</td>";
+                    echo "<td>" . $row["farm_name"] . "</td>";
+                    echo "<td>" . $row["rice_type"] . "</td>";
+                    echo "<td>" . $row["rice_price"] . "</td>";
+                    // Add a "Buy" button that links to shop_action.php with listing_id as a query parameter
+                    echo "<td><a href='shop_form.php?rice_name=" . urlencode($riceName) . "&listing_id=" . $row["listing_id"] . "' class='btn btn-primary'>Buy</a></td>";
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+                echo "</table>";
+            } else {
+                echo "No listings found for this rice type.";
+            }
 
-    // ... Your previous PHP code ...
+            // Close the database connection
+            $stmt->close();
+            $conn->close();
+        } else {
+            echo "Rice type not specified.";
+        }
+        ?>
 
-    if ($stmt->execute()) {
-        $successMessage = "Successfully updated delivery status and expected delivery for Order ID = " . $selected_order_id;
-    } else {
-        $errorMessage = "Error updating delivery status and expected delivery: " . $stmt->error;
-    }
-
-    $stmt->close();
-    $conn->close();
-    ?>
-
-    <!-- HTML content with added div for message -->
-    <div class="container">
-        <h1 class="mt-5">Update Delivery Status</h1>
-        
-        <!-- Success message box -->
-        <?php if (isset($successMessage)) : ?>
-        <div class="alert alert-success mt-3">
-            <?php echo $successMessage; ?>
-        </div>
-        <?php endif; ?>
-
-        <!-- Error message box -->
-        <?php if (isset($errorMessage)) : ?>
-        <div class="alert alert-danger mt-3">
-            <?php echo $errorMessage; ?>
-        </div>
-        <?php endif; ?>
-
-        <!-- Button to go back to the home page (index.html) -->
-        <div class="back-button">
-        <a href="update.php"><button class="btn btn-primary">Back to Factory</button></a>
-        </div>
+        <!-- Add a "Go Back" button -->
+        <a href="shop.php" class="btn btn-primary">Go Back to Shop</a>
     </div>
-
-    <footer class="bg-dark text-white py-4 mt-auto">
+    <footer class="bg-dark text-white py-4">
       <div class="container">
           <div class="row">
               <div class="col-md-6">
@@ -171,5 +169,10 @@
           </div>
       </div>
     </footer>
+
+    <!-- Include Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

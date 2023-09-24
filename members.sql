@@ -35,6 +35,68 @@ CREATE TABLE Farmer (
     'rice_price' FLOAT NOT NULL
     -- Add other attributes as needed
 );
+-- Create Factory Table
+CREATE TABLE factory (
+    farm_id INT NOT NULL,
+    order_id INT NOT NULL,
+    expected_delivery DATE NOT NULL,
+    status VARCHAR(20),
+);
+
+-- Create Customer Table
+CREATE TABLE Customer (
+    order_id SERIAL,
+    customer_name VARCHAR(50) NOT NULL,
+    ordered_rice_type CHAR(20) NOT NULL,
+    customer_address VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    date_ordered DATE NOT NULL,
+    PRIMARY KEY (order_id)
+    -- Add other attributes as needed
+);
+
+-- Create Delivery Table
+CREATE TABLE Delivery (
+    delivery_driver_id SERIAL NOT NULL,
+    delivery_status VARCHAR (20) ,
+    order_id INT NOT NULL,
+    PRIMARY KEY (delivery_driver_id)
+    -- Add other attributes as needed
+);
+
+-- Add Foreign Key Constraint to Factory Table
+ALTER TABLE factory
+ADD CONSTRAINT fk_factory_farm_id FOREIGN KEY (farm_id) REFERENCES Farmer(farmer_id);
+
+DELIMITER //
+CREATE TRIGGER insert_factory_trigger
+AFTER INSERT ON customer
+FOR EACH ROW
+BEGIN
+  INSERT INTO factory (order_id) VALUES (NEW.order_id);
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER update_factory_delivery_trigger
+AFTER UPDATE ON Factory
+FOR EACH ROW
+BEGIN
+  IF NEW.delivery_status = 'Sent' AND OLD.delivery_status != 'Sent' THEN
+    INSERT INTO Delivery (delivery_id)
+    VALUES (NEW.delivery_id);
+  END IF;
+END;
+//
+DELIMITER ;
+
+DROP TRIGGER old_insert_factory_trigger;
+
+
+
+
 
 
 CREATE TABLE `members` (

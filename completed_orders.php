@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Insert Result</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
-    <!-- Bootstrap CSS -->
+    <title>Completed Orders</title>
+    <link rel="stylesheet" href="./css/bootstrap.css"> <!-- Link to your Bootstrap CSS file -->
     <link rel="stylesheet" href="boot.css">
-    <!-- Common CSS -->
+    <!--common.css  -->
     <link rel="stylesheet" href="style.css">
     <style> 
         /* Increase the font size for the entire page */
@@ -26,28 +25,22 @@
         .navbar-nav {
             justify-content: center;
         }
-        /* Center the content */
-        .container {
+        /* Center the "About us" section */
+        .center-about-us {
             text-align: center;
-            margin-top: 50px;
+        }
+
+        /* Give some margin to the main content */
+        .container {
+            margin-top: 20px;
             flex: 1; /* This makes the container fill the remaining vertical space */
         }
-        /* Style the result message box */
-        .result-message {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        /* Style the back button */
-        .back-button {
-            margin-top: 20px;
-        }
+
         /* Adjust the footer styles for better visibility */
         footer {
             background-color: #343a40;
             color: white;
             flex-shrink: 0; /* This prevents the footer from shrinking when content is short */
-            padding: 20px 0;
-            text-align: center;
         }
     </style>
 </head>
@@ -89,72 +82,83 @@
             </div>
         </div>
     </nav>
+    
+    <div class="container mt-5">
+        <h1 class="mb-4">Completed Orders</h1>
 
-    <div class="container">
-        <h1>Congratulations on your listing</h1>
-        
-        <div class="result-message">
-            <?php
-            include 'db.include.php';
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Delivery ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Ordered Rice Type</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include 'db.include.php'; // DB Connection Details
 
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
 
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connect failed: " . $conn->connect_error);
-            }
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connect failed: " . $conn->connect_error);
+                }
 
-            // Taking values from the form data (input)
-            $farm_name = $_REQUEST['farm_name'];
-            $rice_type = $_REQUEST['rice_type'];
-            $rice_price = $_REQUEST['rice_price'];
+                // Create the SQL Statement
+                $sql = "SELECT *
+                        FROM completed_orders";
 
-            // Performing insert query execution, excluding UID
-            $sql = "INSERT INTO Farmer (farm_name, rice_type, rice_price) 
-                    VALUES ('$farm_name', '$rice_type', $rice_price)";
+                // Run the SQL Statement on the Server
+                $result = $conn->query($sql);
 
-            $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["delivery_id"] . "</td>";
+                        echo "<td>" . $row["customer_name"] . "</td>";
+                        echo "<td>" . $row["ordered_rice_type"] . "</td>";
+                        echo "<td>" . $row["quantity"] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>No results found.</td></tr>";
+                }
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
 
-            if ($result) {
-                echo "Rice listed successfully!";
-            } else {
-                echo "Rice listed not completed!";
-            }
-
-            $conn->close();
-            ?>
-        </div>
-
-        <!-- Button to go back to the home page (index.html) -->
-        <div class="back-button">
+        <!-- Back button to the home page (center-aligned) -->
+        <div class="container mt-4 text-center">
             <a href="index.html"><button class="btn btn-primary">Go Back to Home Page</button></a>
         </div>
     </div>
-
     <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Contact Information</h5>
-                    <p>Email: GoldenGrainExchange@gmail.com</p>
-                    <p>Phone: (123) 456-7890</p>
-                </div>
-                <div class="col-md-6">
-                    <h5>Follow Us</h5>
-                    <a href="#" class="text-white">Facebook</a><br>
-                    <a href="#" class="text-white">Twitter</a><br>
-                    <a href="#" class="text-white">Instagram</a>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <!-- Add your logo image here -->
-                    <img src="./Assets/logo_new.png" alt="GoldenGrainExchange Logo" style="max-width: 100px;">
-                    <p>&copy; 2023 GoldenGrainExchange. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-6">
+                  <h5>Contact Information</h5>
+                  <p>Email: GoldenGrainExchange@gmail.com</p>
+                  <p>Phone: (123) 456-7890</p>
+              </div>
+              <div class="col-md-6">
+                  <h5>Follow Us</h5>
+                  <a href="#" class="text-white">Facebook</a><br>
+                  <a href="#" class="text-white">Twitter</a><br>
+                  <a href="#" class="text-white">Instagram</a>
+              </div>
+          </div>
+          <div class="row mt-3">
+              <div class="col">
+                  <!-- Add your logo image here -->
+                  <img src="./Assets/logo_new.png" alt="GoldenGrainExchange Logo" style="max-width: 100px;">
+                  <p>&copy; 2023 GoldenGrainExchange. All rights reserved.</p>
+              </div>
+          </div>
+      </div>
     </footer>
 </body>
 </html>

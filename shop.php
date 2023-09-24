@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Index CRUD Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrap.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="boot.css">
     <!--common.css  -->
     <link rel="stylesheet" href="style.css">
-    <style> 
-        /* Increase the font size for the entire page */
-        body {
+    <title>Shop</title>
+    <style>
+         /* Increase the font size for the entire page */
+         body {
             font-size: 18px;
         }
         
@@ -30,7 +32,7 @@
     </style>
 </head>
 <body>
-    <script src="./js/bootstrap.js"></script>
+<script src="./js/bootstrap.js"></script>
     <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand fs-2 " href="#">Golden Grain Exchange</a>
@@ -67,58 +69,40 @@
             </div>
         </div>
     </nav>
-    <div class="hero-header" style="background-image: url('./Assets/ricefield.png')">
-        <div class="header">
-            <h1 class="display-2">GoldenGrainExchange</h1>
-            <p class="lead">Highest Quality Rice Exchange.</p>
+    <div class="container mt-5">
+        <h1>Shop Items</h1>
+        <!-- Row 1 -->
+        <div class="row">
+            <?php
+            // Define an array of rice types and their descriptions
+            $riceTypes = [
+                "Valencia rice" => "Valencia rice, also known as 'arroz de Valencia' in Spanish, is a variety of short-grain rice primarily cultivated in the region of Valencia, Spain. It is renowned for its unique characteristics, which make it the preferred rice for classic Spanish dishes like paella and other rice-based dishes.",
+                "Brown basari rice" => "Literally spelt as 'The fragrant one' in Sanskrit. Brown basari rice is often cultivated in India and Pakistan. Rice of this type is fragrant long grain rice that has a distinctive and appealing flavor different from other varieties of rice.",
+                "Arborio rice" => "Arborio rice is a short-grain Italian rice variety known for its starchy and creamy texture when cooked. It is one of the most popular types of rice used in risotto dishes, a classic Italian preparation that relies on the rice's ability to absorb liquid and create a velvety consistency.",
+                "Red rice" => "Red rice is a type of whole grain rice that is often characterized by its distinct reddish-brown color. It is not a specific rice variety but rather a general term that can refer to several types of rice with varying shades of red or brown.",
+                "Jasmine rice" => "Jasmine rice, also known as Thai fragrant rice, is a type of long-grain rice known for its distinctive aroma, fragrant flavor, and slightly sticky texture when cooked. It is a popular rice variety in many Southeast Asian cuisines, especially Thai cuisine.",
+                "Basmati rice" => "Basmati rice is a premium, long-grain rice variety known for its unique aroma, slender grains, and delicate flavor. It is primarily grown in the Indian subcontinent, particularly in India and Pakistan, and is one of the most famous and sought-after rice varieties worldwide.",
+                "Black rice" => "Black rice, also known as forbidden rice or purple rice, is a unique and nutrient-rich rice variety with a striking dark color. It has gained popularity in recent years due to its health benefits and culinary versatility.",
+                "Sushi rice" => "Sushi rice, also known as shari or sumeshi, is a specially prepared short-grain rice that serves as the foundation for sushi, the iconic Japanese dish known for its vinegared rice combined with various ingredients such as fish, seafood, vegetables, and occasionally tropical fruits.",
+                "Sticky rice" => "Sticky rice, also known as glutinous rice or sweet rice, is a type of rice that has a distinctly sticky and chewy texture when cooked. Despite its name, sticky rice is gluten-free and does not contain gluten. It is a staple in many Asian cuisines and is used in a variety of dishes, both savory and sweet."
+            ];
+
+            // Loop through the rice types and generate a card for each
+            foreach ($riceTypes as $riceName => $riceDescription) {
+                echo "<div class='col-md-4'>";
+                echo "<div class='card mb-4'>";
+                echo "<img src='./Assets/{$riceName}.png' class='card-img-top'>";
+                echo "<div class='card-body'>";
+                echo "<h5 class='card-title'>{$riceName}</h5>";
+                echo "<p class='card-text'>{$riceDescription}</p>";
+                echo "<a href='shop_select.php?rice_name={$riceName}' class='btn btn-primary btn-sm'>View listings</a>";
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+            }
+            ?>
         </div>
     </div>
-
-    <!--main content-->
-    <div class="container mb-4 mt-4">
-        <div class="row justify-content-center"> <!-- Center the content -->
-            <div class="col-md-8 col-sm-12 mb-3 center-about-us"> <!-- Added col-sm-12 and center-about-us class -->
-                <h2>About us</h2>
-                <hr>
-                <p>We are a dedicated platform specializing in a comprehensive rice database system, providing farmers, buyers, and industry stakeholders with valuable insights and information on rice varieties, pricing, and market trends.</p>
-                <p>Our mission is to empower the rice community with data-driven solutions for informed decision-making in the dynamic world of rice cultivation and trade.</p>
-            </div>
-        </div>
-    </div>
-
-    <!--3 cards-->
-    <div class="container-fluid mb-4">
-        <div class="row bg-light p-md-5">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img class="card-img-top" src="./Assets/story.png" alt="">
-                    <div class="card-body">
-                        <h3>Our story</h3>
-                        <p>Our story revolves around the idea of creating a community where farmers and customers can come together to purchase and enjoy delicious rice. We believe in providing quality products that are sustainably sourced and ethically produced, so you can be sure that you are getting the best product available.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img class="card-img-top" src="./Assets/business.png" alt="">
-                    <div class="card-body">
-                        <h3>Our vision</h3>
-                        <p>At Golden Grain Exchange, our vision is to create a better, more sustainable food system for everyone. We are committed to connecting farmers with customers in order to bring the freshest, highest quality rice to your table. By cutting out the middleman, we are able to make sure that farmers are getting the best price for their product and that customers are getting the best quality for their money. Every grain counts, and we are proud to be part of the solution.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img class="card-img-top" src="./Assets/our_tech.png" alt="">
-                    <div class="card-body">
-                        <h3>Our technology</h3>
-                        <p>Our state-of-the-art technology helps us to ensure that each grain of rice is of the highest quality, and that farmers are able to get a fair price for their product. We are passionate about helping to bridge the gap between farmers and customers, and we invite you to join us on this journey and experience the difference.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <footer class="bg-dark text-white py-4">
       <div class="container">
           <div class="row">
@@ -143,6 +127,7 @@
           </div>
       </div>
     </footer>
+
     <!-- Include Bootstrap JS (optional) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

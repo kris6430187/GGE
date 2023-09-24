@@ -1,43 +1,13 @@
-<?php
-// Include the database configuration
-include 'db.include.php';
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connect failed: " . $conn->connect_error);
-}
-
-// Check if listing_id or order_id is provided in the URL
-if (isset($_GET["listing_id"])) {
-    // Delete farmer record based on listing_id
-    $selected_listing_id = $_GET["listing_id"];
-    $sql = "DELETE FROM farmer WHERE listing_id = " . $selected_listing_id;
-} elseif (isset($_GET["order_id"])) {
-    // Delete customer record based on order_id
-    $selected_order_id = $_GET["order_id"];
-    $sql = "DELETE FROM customer WHERE order_id = " . $selected_order_id;
-} else {
-    echo "Back to <a href='delete.php'>delete page</a><br><br>";
-    die("Parameter listing_id or order_id not submitted to page!");
-}
-
-// Execute the SQL query
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete Action</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
+    <title>Update Delivery Status</title>
+    <link rel="stylesheet" href="./css/bootstrap.css"> <!-- Update the path to your local Bootstrap CSS file -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="boot.css">
-    <!-- Common CSS -->
+    <!--common.css  -->
     <link rel="stylesheet" href="style.css">
-    <style>
+    <style> 
         /* Increase the font size for the entire page */
         body {
             font-size: 18px;
@@ -45,20 +15,17 @@ $result = $conn->query($sql);
             display: flex;
             flex-direction: column;
         }
-
+        
         .navbar-custom {
             background-color: grey;
         }
-
         .navbar-custom .navbar-brand,
         .navbar-custom .navbar-text {
             color: black;
         }
-
         .navbar-nav {
             justify-content: center;
         }
-
         /* Center the "About us" section */
         .center-about-us {
             text-align: center;
@@ -67,12 +34,14 @@ $result = $conn->query($sql);
         /* Give some margin to the main content */
         .container {
             margin-top: 20px;
+            flex: 1; /* This makes the container fill the remaining vertical space */
         }
 
         /* Adjust the footer styles for better visibility */
         footer {
             background-color: #343a40;
             color: white;
+            flex-shrink: 0; /* This prevents the footer from shrinking when content is short */
         }
     </style>
 </head>
@@ -114,29 +83,89 @@ $result = $conn->query($sql);
             </div>
         </div>
     </nav>
-
     <div class="container mt-5">
-        <h1 class="mt-5">Delete Action</h1>
+        <h1 class="mb-4">Update Delivery Status</h1>
 
         <?php
-        if ($result == TRUE) {
-            echo '<div class="alert alert-success mt-3">';
-            echo "Successfully deleted record";
-            echo '</div>';
+        include 'db.include.php';
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connect failed: " . $conn->connect_error);
+        }
+
+        if (!isset($_GET["delivery_id"])) {
+            echo "Back to <a href='For_Delivery.php'>For Delivery</a><br><br>";
+            die("Parameter delivery_id not submitted to page!");
         } else {
-            echo '<div class="alert alert-danger mt-3">';
-            echo "No result found";
-            echo '</div>';
+            $selected_delivery_id = $_GET["delivery_id"];
+        }
+
+        $sql = "SELECT d.delivery_id, c.order_id, c.customer_name, c.customer_address, c.quantity AS customer_ordered_quantity, d.delivery_status
+                FROM customer c
+                LEFT JOIN delivery d ON c.order_id = d.order_id
+                WHERE d.delivery_id = " . $selected_delivery_id;
+        $result = $conn->query($sql);
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $delivery_id = $row["delivery_id"];
+            $order_id = $row["order_id"];
+            $customer_name = $row["customer_name"];
+            $customer_address = $row["customer_address"];
+            $customer_ordered_quantity = $row["customer_ordered_quantity"];
+            $delivery_status = $row["delivery_status"];
+        } else {
+            print_r("No result found");
         }
 
         $conn->close();
         ?>
 
-        <br><br>
-        <a href='delete.php' class="btn btn-primary">Go Back to Delete Page</a>
+        <form action="For_Delivery_action.php" method="post">
+            <table class="table table-striped">
+                <tr>
+                    <td>Delivery ID:</td>
+                    <td><?php echo $delivery_id; ?></td>
+                    <input type="hidden" name="delivery_id" value="<?php echo $delivery_id; ?>">
+                </tr>
+                <tr>
+                    <td>Order ID:</td>
+                    <td><?php echo $order_id; ?></td>
+                </tr>
+                <tr>
+                    <td>Customer Name:</td>
+                    <td><?php echo $customer_name; ?></td>
+                </tr>
+                <tr>
+                    <td>Customer Address:</td>
+                    <td><?php echo $customer_address; ?></td>
+                </tr>
+                <tr>
+                    <td>Customer Ordered Quantity:</td>
+                    <td><?php echo $customer_ordered_quantity; ?></td>
+                </tr>
+                <tr>
+                    <td>Delivery Status:</td>
+                    <td>
+                        <select name="delivery_status" id="delivery_status" class="form-control">
+                            <option value="Received" <?php if ($delivery_status === "Received") echo "selected"; ?>>Received</option>
+                            <option value="On The Way" <?php if ($delivery_status === "On The Way") echo "selected"; ?>>On The Way</option>
+                            <option value="Delivered" <?php if ($delivery_status === "Delivered") echo "selected"; ?>>Delivered</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="text-center">
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+        </form>
     </div>
 
-    <footer class="bg-dark text-white py-4 mt-auto">
+    <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -145,7 +174,10 @@ $result = $conn->query($sql);
                     <p>Phone: (123) 456-7890</p>
                 </div>
                 <div class="col-md-6">
-                    <!-- Add your social media links here -->
+                    <h5>Follow Us</h5>
+                    <a href="#" class="text-white">Facebook</a><br>
+                    <a href="#" class="text-white">Twitter</a><br>
+                    <a href="#" class="text-white">Instagram</a>
                 </div>
             </div>
             <div class="row mt-3">
