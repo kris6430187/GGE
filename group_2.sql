@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `completed_orders`
+-15 Table structure for table `completed_orders`
 --
 
 CREATE TABLE `completed_orders` (
@@ -37,9 +37,8 @@ CREATE TABLE `completed_orders` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-1 Table structure for table `customer`
 --
-
 CREATE TABLE `customer` (
   `order_id` bigint(20) UNSIGNED NOT NULL,
   `customer_name` varchar(50) NOT NULL,
@@ -66,9 +65,8 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `delivery`
+-10 Table structure for table `delivery`
 --
-
 CREATE TABLE `delivery` (
   `delivery_id` bigint(20) UNSIGNED NOT NULL,
   `delivery_status` varchar(20) DEFAULT NULL,
@@ -93,9 +91,8 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `factory`
+-7 Table structure for table `factory`
 --
-
 CREATE TABLE `factory` (
   `order_id` bigint(20) UNSIGNED NOT NULL,
   `expected_delivery` date NOT NULL,
@@ -105,9 +102,7 @@ CREATE TABLE `factory` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `farmer`
---
-
+-4 Table structure for table `farmer`
 CREATE TABLE `farmer` (
   `listing_id` bigint(20) UNSIGNED NOT NULL,
   `farm_name` char(50) NOT NULL,
@@ -115,77 +110,63 @@ CREATE TABLE `farmer` (
   `rice_price` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `farmer`
---
 
 INSERT INTO `farmer` (`listing_id`, `farm_name`, `rice_type`, `rice_price`) VALUES
 (19, 'Kris rice farm', 'Jasmine rice', 6.99),
 (21, 'Enzo benz farm', 'Sticky rice', 11.99);
 
---
--- Indexes for dumped tables
---
 
 --
--- Indexes for table `customer`
+-3 Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`order_id`);
 
 --
--- Indexes for table `delivery`
+-12 Indexes for table `delivery`
 --
 ALTER TABLE `delivery`
   ADD PRIMARY KEY (`delivery_id`),
   ADD KEY `fk_delivery_order_id` (`order_id`);
 
 --
--- Indexes for table `factory`
+-8 Indexes for table `factory`
 --
 ALTER TABLE `factory`
   ADD KEY `fk_factory_order_id` (`order_id`);
 
 --
--- Indexes for table `farmer`
+-6 Indexes for table `farmer`
 --
 ALTER TABLE `farmer`
   ADD PRIMARY KEY (`listing_id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
 
 --
--- AUTO_INCREMENT for table `customer`
+-2 AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
   MODIFY `order_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `delivery`
+-11 AUTO_INCREMENT for table `delivery`
 --
 ALTER TABLE `delivery`
   MODIFY `delivery_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `farmer`
---
+-5 AUTO_INCREMENT for table `farmer`
 ALTER TABLE `farmer`
   MODIFY `listing_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- Constraints for dumped tables
---
-
---
--- Constraints for table `delivery`
+-13 Constraints for table `delivery`
 --
 ALTER TABLE `delivery`
   ADD CONSTRAINT `fk_delivery_order_id` FOREIGN KEY (`order_id`) REFERENCES `customer` (`order_id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `factory`
+-9 Constraints for table `factory`
 --
 ALTER TABLE `factory`
   ADD CONSTRAINT `fk_factory_order_id` FOREIGN KEY (`order_id`) REFERENCES `customer` (`order_id`) ON DELETE CASCADE;
@@ -194,3 +175,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
