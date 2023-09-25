@@ -113,6 +113,7 @@
         ?>
 
         <?php
+        // Create the SQL Statement
         $sql = "SELECT * FROM farmer"; // Assuming your table name is "farmer"
         $result = $conn->query($sql);
 
@@ -159,6 +160,7 @@
         ?>
 
         <?php
+        // Create the SQL Statement to select customer table
         $sql = "SELECT * FROM customer"; 
         $result = $conn->query($sql);
 

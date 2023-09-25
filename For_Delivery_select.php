@@ -103,7 +103,7 @@
         } else {
             $selected_delivery_id = $_GET["delivery_id"];
         }
-
+        // Create the SQL Statement for selecting the attributes to display as table
         $sql = "SELECT d.delivery_id, c.order_id, c.customer_name, c.customer_address, c.quantity AS customer_ordered_quantity, d.delivery_status
                 FROM customer c
                 LEFT JOIN delivery d ON c.order_id = d.order_id

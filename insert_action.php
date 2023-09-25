@@ -110,7 +110,7 @@
             $rice_type = $_REQUEST['rice_type'];
             $rice_price = $_REQUEST['rice_price'];
 
-            // Performing insert query execution, excluding UID
+            // Performing insert query execution, excluding the listing_id as its auto increment
             $sql = "INSERT INTO Farmer (farm_name, rice_type, rice_price) 
                     VALUES ('$farm_name', '$rice_type', $rice_price)";
 

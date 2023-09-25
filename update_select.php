@@ -66,7 +66,7 @@
     if ($conn->connect_error) {
         die("Connect failed: " . $conn->connect_error);
     }
-
+    // Create the SQL Statement to display the table factory joined with customer
     $sql = "SELECT c.order_id, c.customer_name, c.quantity AS customer_ordered_quantity, c.ordered_rice_type AS customer_rice_type, c.date_ordered, fa.expected_delivery, fa.delivery_status
             FROM customer c
             LEFT JOIN factory fa ON c.order_id = fa.order_id

@@ -107,7 +107,7 @@
                     die("Connect failed: " . $conn->connect_error);
                 }
 
-                // Create the SQL Statement
+                // Create the SQL Statement to display everything from completed_order table
                 $sql = "SELECT *
                         FROM completed_orders";
 

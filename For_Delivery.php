@@ -96,7 +96,7 @@
         if ($conn->connect_error) {
             die("Connect failed: " . $conn->connect_error);
         }
-
+        // Create the SQL Statement to display tables joining delivery and customer
         $sql = "SELECT d.delivery_id, c.order_id, c.customer_name, c.customer_address, c.quantity AS customer_ordered_quantity, d.delivery_status
                 FROM customer c
                 LEFT JOIN delivery d ON c.order_id = d.order_id";

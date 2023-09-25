@@ -104,7 +104,7 @@
                 die("Connect failed: " . $conn->connect_error);
             }
 
-            // Prepare and execute the SQL query
+            // Prepare and execute the SQL query to select listing where its a certain rice type
             $sql = "SELECT listing_id, farm_name, rice_type, rice_price FROM farmer WHERE rice_type = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $riceName);

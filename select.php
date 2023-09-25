@@ -91,7 +91,7 @@
                     die("Connect failed: " . $conn->connect_error);
                 }
 
-                // Create the SQL Statement
+                // Create the SQL Statement to display the farmer table
                 $sql = "SELECT listing_id, farm_name, rice_type, rice_price FROM farmer";
 
                 // Run the SQL Statement on the Server
@@ -140,7 +140,7 @@
                     die("Connect failed: " . $conn->connect_error);
                 }
 
-                // Create the SQL Statement
+                // Create the SQL Statement to display the customer joined with factory table
                 $sql = "SELECT c.order_id, c.customer_name, c.quantity AS customer_ordered_quantity, c.ordered_rice_type AS customer_rice_type, c.date_ordered, fa.expected_delivery, fa.delivery_status
                         FROM customer c
                         LEFT JOIN factory fa ON c.order_id = fa.order_id";
@@ -245,7 +245,7 @@
                     die("Connect failed: " . $conn->connect_error);
                 }
 
-                // Create the SQL Statement
+                // Create the SQL Statement to display the delivery joined with customer table
                 $sql = "SELECT d.delivery_id, c.order_id, c.customer_name, c.customer_address, c.quantity AS customer_ordered_quantity, d.delivery_status
                         FROM customer c
                         LEFT JOIN delivery d ON c.order_id = d.order_id";
@@ -298,7 +298,7 @@
                     die("Connect failed: " . $conn->connect_error);
                 }
 
-                // Create the SQL Statement
+                // Create the SQL Statement to display the completed_orders table
                 $sql = "SELECT *
                         FROM completed_orders";
 
